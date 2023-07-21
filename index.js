@@ -1,95 +1,104 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const Note = require('./models/note');
+const app = require('./app') // the actual Express application
+const config = require('./utils/config')
+const logger = require('./utils/logger')
 
-const app = express();
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
+})
 
-app.use(express.static('build'));
-app.use(express.json());
-app.use(cors());
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
+// require('dotenv').config();
+// const express = require('express');
+// const cors = require('cors');
+// const Note = require('./models/note');
 
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted id' });
-  } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ error: error.message });
-  }
+// const app = express();
 
-  next(error);
-};
+// app.use(express.static('build'));
+// app.use(express.json());
+// app.use(cors());
 
-app.use(errorHandler);
+// const errorHandler = (error, request, response, next) => {
+//   console.error(error.message);
 
-let notes = [];
+//   if (error.name === 'CastError') {
+//     return response.status(400).send({ error: 'malformatted id' });
+//   } else if (error.name === 'ValidationError') {
+//     return response.status(400).json({ error: error.message });
+//   }
 
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>');
-});
+//   next(error);
+// };
 
-app.get('/api/notes', (request, response) => {
-  Note.find({}).then(notes => {
-    console.log(notes);
-    response.json(notes);
-  });
-});
+// app.use(errorHandler);
 
-app.get('/api/notes/:id', (request, response, next) => {
-  Note.findById(request.params.id)
-      .then(note => {
-      if (note) {
-        response.json(note);
-      } else {
-        response.status(404).end();
-      }
-    })
+// let notes = [];
 
-    .catch(error => next(error));
-});
+// app.get('/', (request, response) => {
+//   response.send('<h1>Hello World!</h1>');
+// });
 
-app.delete('/api/notes/:id', (request, response, next) => {
-  Note.findByIdAndRemove(request.params.id)
-    .then(result => {
-      response.status(204).end();
-    })
-    .catch(error => next(error));
-});
+// app.get('/api/notes', (request, response) => {
+//   Note.find({}).then(notes => {
+//     console.log(notes);
+//     response.json(notes);
+//   });
+// });
 
-app.post('/api/notes', (request, response, next) => {
-  const body = request.body;
+// app.get('/api/notes/:id', (request, response, next) => {
+//   Note.findById(request.params.id)
+//       .then(note => {
+//       if (note) {
+//         response.json(note);
+//       } else {
+//         response.status(404).end();
+//       }
+//     })
 
-  if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' });
-  }
+//     .catch(error => next(error));
+// });
 
-  const note = new Note({
-    content: body.content,
-    important: body.important || false,
-  });
+// app.delete('/api/notes/:id', (request, response, next) => {
+//   Note.findByIdAndRemove(request.params.id)
+//     .then(result => {
+//       response.status(204).end();
+//     })
+//     .catch(error => next(error));
+// });
 
-  note.save()
-      .then(savedNote => response.json(savedNote))
-      .catch(error => next(error));
-});
+// app.post('/api/notes', (request, response, next) => {
+//   const body = request.body;
 
-app.put('/api/notes/:id', (request, response, next) => {
-  const { content, important } = request.body
+//   if (body.content === undefined) {
+//     return response.status(400).json({ error: 'content missing' });
+//   }
 
-  Note.findByIdAndUpdate(
-    request.params.id,
-    { content, important },
-    { new: true, runValidators: true, context: 'query' }
-  )
-      .then(updatedNote => {
-        response.json(updatedNote);
-      })
-      .catch(error => next(error));
-});
+//   const note = new Note({
+//     content: body.content,
+//     important: body.important || false,
+//   });
 
-const { PORT } = process.env;
+//   note.save()
+//       .then(savedNote => response.json(savedNote))
+//       .catch(error => next(error));
+// });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// app.put('/api/notes/:id', (request, response, next) => {
+//   const { content, important } = request.body
+
+//   Note.findByIdAndUpdate(
+//     request.params.id,
+//     { content, important },
+//     { new: true, runValidators: true, context: 'query' }
+//   )
+//       .then(updatedNote => {
+//         response.json(updatedNote);
+//       })
+//       .catch(error => next(error));
+// });
+
+// const { PORT } = process.env;
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
