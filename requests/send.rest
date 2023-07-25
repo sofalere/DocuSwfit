@@ -1,9 +1,11 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFhYWFhIiwiaWQiOiI2NGJhZWVmZWQwMzQzNDhiOTE4Y2UyMmMiLCJpYXQiOjE2OTAwNDExMzF9.CfDe644qVk1aBAtw9luEypg7o4QPkin39gQbF7CBHRc
 
 {
-  "content": "a",
-  "important": "true"
+  "content": "abhsadbhsabd",
+  "important": "true",
+  "userId": "64baeed8d034348b918ce228"
 }
 
 ###
@@ -11,3 +13,31 @@ GET http://localhost:3001/api/notes
 
 ###
 GET http://localhost:3001/api/notes/64b9b83c818c8a6918a5a96e
+
+### add user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username": "aaaaa",
+    "name": "aaaaa",
+    "password": "aaaaa"
+}
+
+### valid login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "aaaaa",
+    "password": "aaaaa"
+}
+
+### invalid password for login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "aaaaa",
+    "password": "bbb"
+}
