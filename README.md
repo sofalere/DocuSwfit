@@ -1,4 +1,4 @@
-# Take the Notes
+# DocuSwift
 
 This simple yet powerful notes app, built using Express, JavaScript, and MongoDB with Mongoose, allows multiple users to seamlessly create, edit, and manage their notes. The application prioritizes security by employing bcrypt to hash passwords, ensuring user data integrity.
 
