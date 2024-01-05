@@ -28,7 +28,7 @@ This simple yet powerful notes app, built using Express, JavaScript, and MongoDB
     npm install
     ```
 
-4. **Set up your MongoDB connection in the `config.js` file.**
+4. **Set up your MongoDB connection in the `utils/config.js` file.**
 
 5. **Run the application:**
     ```bash
